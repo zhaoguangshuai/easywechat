@@ -1,11 +1,13 @@
 <?php
 namespace app\index\controller;
 
+use think\Controller;
+
 class Index
 {
     public function index()
     {
-    	$echoStr = $_GET["echostr"];
+    	/*$echoStr = $_GET["echostr"];
         $signature = $_GET["signature"];
         $timestamp = $_GET["timestamp"];
         $nonce = $_GET["nonce"];
@@ -21,7 +23,13 @@ class Index
         	exit;
 		}else{
 			echo '验证失败';
-		}
+		}*/
+        //    先初始化微信
+        $app = app('wechat.official_account');
+        $app->server->push(function($message){
+            return 'hello,world';
+        });
+        $app->server->serve()->send();
 
     }
 
