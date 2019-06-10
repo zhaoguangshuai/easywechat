@@ -151,9 +151,9 @@ class Index
             $image_url = 'http://easywechat.szbchm.com'.trim($hechengname,'.');
             trace('图片链接地址',$image_url);
             //$mediaIdres = $app->media->uploadImage($image_url);
-            //$result = $app->material->uploadImage($hechengname);
-            $result = $app->media->uploadImage($hechengname);
-            trace('上传素材返回信息',json_encode($result));
+            $result = $app->material->uploadImage($hechengname);
+            //$result = $app->media->uploadImage($hechengname);
+            trace('上传素材返回信息',$result['media_id']);
             return new Image($result['media_id']);
 
             /*
