@@ -31,6 +31,7 @@ class Index
         trace('微信json数据',json_encode($obj));
         $app = app('wechat.official_account');
         $app->server->push(function ($message) {
+            trace('message数据',json_encode($message));
             switch ($message['MsgType']) {
                 case 'event':
                     return '收到事件消息';
