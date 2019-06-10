@@ -137,7 +137,9 @@ class Index
             $res2 = file_put_contents($headfilename, $headimgcontent); // 写入文件
             trace('文件写入返回值2',$res2);
 
-            
+            $image = \think\Image::open($filename);
+            // 给原图左上角添加水印并保存water_image.png
+            $image->water($headfilename,\think\Image::WATER_SOUTHEAST)->text($user['nickname'],20,'#ffffff')->save($path.'/hecheng'.$message['FromUserName'].'.jpg');
 
             // Array
             // (
