@@ -39,7 +39,7 @@ class Index
             switch ($message['MsgType']) {
                 case 'event':
                     //return $this->returnEvent($message);
-                    $media_id = $this->returnEvent($message);
+                    //$media_id = $this->returnEvent($message);
                     //return new Image($media_id);
                     return new Image('6Y0ORPyd40WcARxy5vkmFzr49mVh8eIiqilneLrOX9w');
                     break;
