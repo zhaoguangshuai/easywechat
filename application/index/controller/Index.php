@@ -39,7 +39,7 @@ class Index
                     break;
                 case 'text':
                     //return '收到文字消息';
-                    new Text('您好！overtrue。');
+                    return new Text('您好！overtrue。');
                     break;
                 case 'image':
                     return '收到图片消息';
