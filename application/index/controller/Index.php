@@ -138,8 +138,9 @@ class Index
             trace('文件写入返回值2',$res2);
 
             $image = \think\Image::open($filename);
-            // 给原图左上角添加水印并保存water_image.png
-            $image->water($headfilename,\think\Image::WATER_SOUTHEAST)->save($path.'/hecheng'.$message['FromUserName'].'.jpg');
+            // 添加水印图片
+            $hechengname = $path.'/hecheng'.$message['FromUserName'].'.jpg';
+            $image->water($headfilename,\think\Image::WATER_SOUTHEAST)->text($message['nickname'],'HYQingKongTiJ.ttf',20,'#ffffff',\think\Image::WATER_SOUTHWEST)->save($hechengname);
 
             // Array
             // (
