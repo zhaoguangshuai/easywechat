@@ -39,7 +39,8 @@ class Index
             switch ($message['MsgType']) {
                 case 'event':
                     //return $this->returnEvent($message);
-                    return new Image($this->returnEvent($message));
+                    //return new Image($this->returnEvent($message));
+                    return new Image('6Y0ORPyd40WcARxy5vkmF3VRTwZwz1kwub_xPi3Fgqk');
                     break;
                 case 'text':
                     //return '收到文字消息';
