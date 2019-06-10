@@ -38,7 +38,8 @@ class Index
             trace('message数据',json_encode($message));
             switch ($message['MsgType']) {
                 case 'event':
-                    return $this->returnEvent($message);
+                    //return $this->returnEvent($message);
+                    return new Image('6Y0ORPyd40WcARxy5vkmFxDcjzVYNpoE3hxuffTKWeA');
                     break;
                 case 'text':
                     //return '收到文字消息';
