@@ -155,7 +155,7 @@ class Index
             //$result = $app->media->uploadImage($hechengname);
             trace('上传素材返回信息',json_encode($result));
             trace('上传素材返回media_id',$result['media_id']);
-            $res = new Image($result['media_id']);
+            $res = new Image('6Y0ORPyd40WcARxy5vkmFxDcjzVYNpoE3hxuffTKWeA');
             trace('图片消息回复返回值',json_encode($res));
             return $res;
 
