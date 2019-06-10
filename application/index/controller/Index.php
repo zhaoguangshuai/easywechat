@@ -130,6 +130,7 @@ class Index
             //将微信用户图片保存到本地
             //获取用户信息
             $user = $app->user->get($message['FromUserName']);
+            trace('用户信息',json_encode($user));
             $headimgcontent = file_get_contents($user['headimgurl']); // 得到二进制图片内容
             $headfilename = $path.'/headimg'.$message['FromUserName'].'.jpg';
             //将该用户微信图片保存到服务器
