@@ -136,6 +136,7 @@ class Index
             //将该用户微信图片保存到服务器
             $res2 = file_put_contents($headfilename, $headimgcontent); // 写入文件
             trace('文件写入返回值2',$res2);
+            return $headfilename;
 
             // Array
             // (
