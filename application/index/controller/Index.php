@@ -3,6 +3,8 @@ namespace app\index\controller;
 
 use think\Controller;
 use EasyWeChat\Kernel\Messages\Text;
+use EasyWeChat\Kernel\Messages\News;
+use EasyWeChat\Kernel\Messages\NewsItem;
 
 class Index
 {
@@ -144,6 +146,23 @@ class Index
             $hechengname = $path.'/hecheng'.$message['FromUserName'].'.jpg';
             $image->water($headfilename,\think\Image::WATER_SOUTHEAST)->text($user['nickname'],'simkai.ttf',20,'#FF3030',\think\Image::WATER_SOUTHWEST)->save($hechengname);
 
+            /*
+             *  title 标题
+                description 描述
+                image 图片链接
+                url 链接 URL
+            */
+            $image_url = 'http://easywechat.szbchm.com'.trim($hechengname,'.');
+            trace('分享二维码访问地址',$image_url);
+            $items = [
+                new NewsItem([
+                    'title'       => '一元购',
+                    'description' => '分享二维码,邀请十位好友关注公众号就可以一元购买挂历。',
+                    'url'         => 'www.beidu.com',
+                    'image'       => $image_url,
+                ]),
+            ];
+            return new News($items);
 
 
         }elseif ($message['EventKey'] == 'V1001_GOOD'){ //赞一下我们点击事件
