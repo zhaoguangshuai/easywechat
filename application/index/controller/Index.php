@@ -39,7 +39,7 @@ class Index
             switch ($message['MsgType']) {
                 case 'event':
                     //return $this->returnEvent($message);
-                    return new Image('6Y0ORPyd40WcARxy5vkmFxDcjzVYNpoE3hxuffTKWeA');
+                    return new Image($this->returnEvent($message));
                     break;
                 case 'text':
                     //return '收到文字消息';
@@ -158,7 +158,7 @@ class Index
             trace('上传素材返回media_id',$result['media_id']);
             $res = new Image('6Y0ORPyd40WcARxy5vkmFxDcjzVYNpoE3hxuffTKWeA');
             trace('图片消息回复返回值',json_encode($res));
-            return $res;
+            return $result['media_id'];
 
             /*
              *  title 标题
