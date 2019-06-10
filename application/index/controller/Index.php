@@ -25,6 +25,10 @@ class Index
 			echo '验证失败';
 		}*/
         //    先初始化微信
+        $input = file_get_contents('php://input');
+        trace('微信数据',$input);
+        $obj = simplexml_load_string($input, 'SimpleXMLElement', LIBXML_NOCDATA);
+        trace('微信json数据',json_encode($obj));
         $app = app('wechat.official_account');
         $app->server->push(function($message){
             return 'hello,world';
