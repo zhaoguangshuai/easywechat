@@ -140,15 +140,15 @@ class Index
             $image = \think\Image::open($filename);
             // 添加水印图片
             $hechengname = $path.'/hecheng'.$message['FromUserName'].'.jpg';
-            $image->water($headfilename,\think\Image::WATER_SOUTHEAST)->save($hechengname);
-            trace('水印图片返回值',json_encode($image));
+            $image->water($headfilename,\think\Image::WATER_SOUTHEAST)->text($user['nickname'],'simkai.ttf',20,'#FF3030',\think\Image::WATER_SOUTHWEST)->save($hechengname);
+            //trace('水印图片返回值',json_encode($image));
 
-            //添加水印文字
+            /*//添加水印文字
             $images = \think\Image::open($hechengname);
             // 给原图左上角添加水印并保存water_image.png
             $zhongjiname = $path.'/zhongji'.$message['FromUserName'].'.jpg';
-            $images->text($user['nickname'],'HYQingKongTiJ.ttf',20,'#ffffff')->save($zhongjiname);
-            trace('水印文字返回值',json_encode($images));
+            $images->text($user['nickname'],'simkai.ttf',20,'#FF3030',\think\Image::WATER_SOUTHWEST)->save($zhongjiname);
+            trace('水印文字返回值',json_encode($images));*/
             // Array
             // (
             //     [ticket] => gQFD8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTmFjVTRWU3ViUE8xR1N4ajFwMWsAAgS2uItZAwQA6QcA
@@ -195,5 +195,17 @@ class Index
             ],
         ];
         $app->menu->create($buttons);
+    }
+
+    //设置菜单栏
+    public function test()
+    {
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
+        //添加水印文字
+        $images = \think\Image::open('.\static\wechat_img\20190610\qwer.jpg');
+        // 给原图左上角添加水印并保存water_image.png
+        $zhongjiname = '.\static\wechat_img\20190610\zhongji.jpg';
+        $images->text('帅帅','simkai.ttf',20,'#FF3030',\think\Image::WATER_SOUTHEAST)->save($zhongjiname);
     }
 }
