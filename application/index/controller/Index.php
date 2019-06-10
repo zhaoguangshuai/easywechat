@@ -141,14 +141,14 @@ class Index
             // 添加水印图片
             $hechengname = $path.'/hecheng'.$message['FromUserName'].'.jpg';
             $syimg1 = $image->water($headfilename,\think\Image::WATER_SOUTHEAST)->save($hechengname);
-            trace('水印图片返回值',$syimg1);
+            trace('水印图片返回值',json_encode($syimg1));
 
             //添加水印文字
             $image2 = \think\Image::open($hechengname);
             // 给原图左上角添加水印并保存water_image.png
             $zhongjiname = $path.'/zhongji'.$message['FromUserName'].'.jpg';
             $sywenzi = $image2->text($user['nickname'],'HYQingKongTiJ.ttf',20,'#ffffff')->save($zhongjiname);
-            trace('水印文字返回值',$sywenzi);
+            trace('水印文字返回值',json_encode($sywenzi));
             // Array
             // (
             //     [ticket] => gQFD8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTmFjVTRWU3ViUE8xR1N4ajFwMWsAAgS2uItZAwQA6QcA
