@@ -34,7 +34,7 @@ class Index
             trace('message数据',json_encode($message));
             switch ($message['MsgType']) {
                 case 'event':
-                    return '收到事件消息';
+                    return $this->returnEvent($message);
                     break;
                 case 'text':
                     return '收到文字消息';
@@ -68,6 +68,40 @@ class Index
 
     }
 
+    //设置菜单栏
+    protected function returnEvent($message)
+    {
+        switch ($message['Event']) {
+            case 'subscribe':  //订阅公众号
+                //return $this->returnEvent($message);
+                return '订阅公众号';
+                break;
+            case 'unsubscribe': //取消订阅公众号
+                return '取消订阅公众号';
+                break;
+            case 'subscribe':  //扫描带参数二维码事件,用户未关注时，进行关注后的事件推送
+                return '扫描带参数二维码事件,用户未关注时，进行关注后的事件推送';
+                break;
+            case 'SCAN':  //扫描带参数二维码事件,用户已经关注时，进行关注后的事件推送
+                return '扫描带参数二维码事件,用户已经关注时，进行关注后的事件推送';
+                break;
+            case 'LOCATION':  //上报地理位置事件
+                return '上报地理位置事件';
+                break;
+            case 'CLICK':  //自定义菜单事件  点击菜单拉取消息时的事件推送
+                return '自定义菜单事件  点击菜单拉取消息时的事件推送';
+                break;
+            case 'VIEW':   //自定义菜单事件  点击菜单跳转链接时的事件推送
+                return '自定义菜单事件  点击菜单跳转链接时的事件推送';
+                break;
+            default:
+                return '收到其它消息';
+                break;
+        }
+
+    }
+
+    //设置菜单栏
     public function hello()
     {
         $app = app('wechat.official_account');
