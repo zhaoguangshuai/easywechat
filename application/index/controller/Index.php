@@ -146,9 +146,10 @@ class Index
             // 添加水印图片
             $hechengname = $path.'/hecheng'.$message['FromUserName'].'.jpg';
             $image->water($headfilename,\think\Image::WATER_SOUTHEAST)->text($user['nickname'],'simkai.ttf',20,'#FF3030',\think\Image::WATER_SOUTHWEST)->save($hechengname);
-
+            trace('测试日志',1111111111111111);
             //分享图片链接地址
             $image_url = 'http://easywechat.szbchm.com'.trim($hechengname,'.');
+            trace('图片链接地址',$image_url);
             //$mediaIdres = $app->media->uploadImage($image_url);
             $result = $app->material->uploadImage($image_url);
             trace('上传素材返回信息',json_encode($result));
@@ -219,8 +220,9 @@ class Index
     public function test()
     {
         $app = app('wechat.official_account');
-        $res = $app->media->uploadImage('.\static\wechat_img\20190610\qwer.jpg');
-        var_dump($res);
+        $result = $app->material->uploadImage('.\static\wechat_img\20190610\qwer.jpg');
+        //$res = $app->media->uploadImage('.\static\wechat_img\20190610\qwer.jpg');
+        var_dump($result);
 
         exit;
         //添加水印文字
