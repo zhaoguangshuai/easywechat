@@ -39,7 +39,7 @@ class Index
                     break;
                 case 'text':
                     //return '收到文字消息';
-                    new Text('收到文字消息11');
+                    new Text('您好！overtrue。');
                     break;
                 case 'image':
                     return '收到图片消息';
@@ -66,7 +66,7 @@ class Index
 
             // ...
         });
-        //$app->server->serve()->send();
+        $app->server->serve()->send();
 
     }
 
