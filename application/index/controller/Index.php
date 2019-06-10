@@ -2,6 +2,7 @@
 namespace app\index\controller;
 
 use think\Controller;
+use EasyWeChat\Kernel\Messages\Text;
 
 class Index
 {
@@ -37,7 +38,8 @@ class Index
                     return $this->returnEvent($message);
                     break;
                 case 'text':
-                    return '收到文字消息';
+                    //return '收到文字消息';
+                    new Text('收到文字消息');
                     break;
                 case 'image':
                     return '收到图片消息';
@@ -64,7 +66,7 @@ class Index
 
             // ...
         });
-        $app->server->serve()->send();
+        //$app->server->serve()->send();
 
     }
 
@@ -141,20 +143,9 @@ class Index
             // 添加水印图片
             $hechengname = $path.'/hecheng'.$message['FromUserName'].'.jpg';
             $image->water($headfilename,\think\Image::WATER_SOUTHEAST)->text($user['nickname'],'simkai.ttf',20,'#FF3030',\think\Image::WATER_SOUTHWEST)->save($hechengname);
-            //trace('水印图片返回值',json_encode($image));
 
-            /*//添加水印文字
-            $images = \think\Image::open($hechengname);
-            // 给原图左上角添加水印并保存water_image.png
-            $zhongjiname = $path.'/zhongji'.$message['FromUserName'].'.jpg';
-            $images->text($user['nickname'],'simkai.ttf',20,'#FF3030',\think\Image::WATER_SOUTHWEST)->save($zhongjiname);
-            trace('水印文字返回值',json_encode($images));*/
-            // Array
-            // (
-            //     [ticket] => gQFD8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTmFjVTRWU3ViUE8xR1N4ajFwMWsAAgS2uItZAwQA6QcA
-            //     [expire_seconds] => 518400
-            //     [url] => http://weixin.qq.com/q/02NacU4VSubPO1GSxj1p1k
-            // )
+
+
         }elseif ($message['EventKey'] == 'V1001_GOOD'){ //赞一下我们点击事件
 
         }else{
