@@ -36,13 +36,13 @@ return [
     'official_account' => [
         'default' => [
             // AppID
-            'app_id' => env('WECHAT_OFFICIAL_ACCOUNT_APPID', 'your-app-id'),
+            'app_id' => env('WECHAT_OFFICIAL_ACCOUNT_APPID', 'wxbf34ee861a89cc1c'),
             // AppSecret
-            'secret' => env('WECHAT_OFFICIAL_ACCOUNT_SECRET', 'your-app-secret'),
+            'secret' => env('WECHAT_OFFICIAL_ACCOUNT_SECRET', 'a6b8adc5dd702f6e21b386e10d0df1c9'),
             // Token
-            'token' => env('WECHAT_OFFICIAL_ACCOUNT_TOKEN', 'your-token'),
+            'token' => env('WECHAT_OFFICIAL_ACCOUNT_TOKEN', 'n1G5F101uhuMXw9sZD8dGgNS19YFsOg'),
             // EncodingAESKey
-            'aes_key' => env('WECHAT_OFFICIAL_ACCOUNT_AES_KEY', ''),
+            'aes_key' => env('WECHAT_OFFICIAL_ACCOUNT_AES_KEY', 'nLfJvMRdLZ9Ylz0NwrTO2Kp8dVjSqFX4G69GqMCXjXK'),
             /*
              * OAuth 配置
              *
