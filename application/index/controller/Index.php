@@ -5,6 +5,7 @@ use think\Controller;
 use EasyWeChat\Kernel\Messages\Text;
 use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
+use EasyWeChat\Kernel\Messages\Image;
 
 class Index
 {
@@ -146,13 +147,19 @@ class Index
             $hechengname = $path.'/hecheng'.$message['FromUserName'].'.jpg';
             $image->water($headfilename,\think\Image::WATER_SOUTHEAST)->text($user['nickname'],'simkai.ttf',20,'#FF3030',\think\Image::WATER_SOUTHWEST)->save($hechengname);
 
+            //分享图片链接地址
+            $image_url = 'http://easywechat.szbchm.com'.trim($hechengname,'.');
+            $mediaIdres = $app->media->uploadImage($image_url);
+            trace('上传素材返回信息',$mediaIdres);
+            return new Image($mediaIdres);
+
             /*
              *  title 标题
                 description 描述
                 image 图片链接
                 url 链接 URL
             */
-            $image_url = 'http://easywechat.szbchm.com'.trim($hechengname,'.');
+            /*$image_url = 'http://easywechat.szbchm.com'.trim($hechengname,'.');
             trace('分享二维码访问地址',$image_url);
             $items = [
                 new NewsItem([
@@ -162,7 +169,7 @@ class Index
                     'image'       => $image_url,
                 ]),
             ];
-            return new News($items);
+            return new News($items);*/
 
 
         }elseif ($message['EventKey'] == 'V1001_GOOD'){ //赞一下我们点击事件
@@ -210,8 +217,11 @@ class Index
     //设置菜单栏
     public function test()
     {
-        error_reporting(E_ALL);
-        ini_set('display_errors', 1);
+        $app = app('wechat.official_account');
+        $res = $app->media->uploadImage('.\static\wechat_img\20190610\qwer.jpg');
+        var_dump($res);
+
+        exit;
         //添加水印文字
         $images = \think\Image::open('.\static\wechat_img\20190610\qwer.jpg');
         // 给原图左上角添加水印并保存water_image.png
