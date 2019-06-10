@@ -140,7 +140,13 @@ class Index
             $image = \think\Image::open($filename);
             // 添加水印图片
             $hechengname = $path.'/hecheng'.$message['FromUserName'].'.jpg';
-            $image->water($headfilename,\think\Image::WATER_SOUTHEAST)->text($message['nickname'],'HYQingKongTiJ.ttf',20,'#ffffff',\think\Image::WATER_SOUTHWEST)->save($hechengname);
+            $image->water($headfilename,\think\Image::WATER_SOUTHEAST)->save($hechengname);
+
+            //添加水印文字
+            $image2 = \think\Image::open($hechengname);
+            // 给原图左上角添加水印并保存water_image.png
+            $zhongjiname = $path.'/zhongji'.$message['FromUserName'].'.jpg';
+            $image2->text($message['nickname'],'HYQingKongTiJ.ttf',20,'#ffffff',\think\Image::WATER_SOUTHWEST)->save($zhongjiname);
 
             // Array
             // (
