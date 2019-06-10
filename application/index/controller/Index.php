@@ -41,6 +41,7 @@ class Index
                     //return $this->returnEvent($message);
                     $media_id = $this->returnEvent($message);
                     trace('素材media_id',$media_id);
+                    sleep(2);
                     return new Image($media_id);
                     //return new Image('6Y0ORPyd40WcARxy5vkmF3VRTwZwz1kwub_xPi3Fgqk');
                     break;
