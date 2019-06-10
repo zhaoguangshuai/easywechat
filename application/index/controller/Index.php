@@ -139,7 +139,7 @@ class Index
 
             $image = \think\Image::open($filename);
             // 给原图左上角添加水印并保存water_image.png
-            $image->water($headfilename,\think\Image::WATER_SOUTHEAST)->text($user['nickname'],20,'#ffffff')->save($path.'/hecheng'.$message['FromUserName'].'.jpg');
+            $image->water($headfilename,\think\Image::WATER_SOUTHEAST)->save($path.'/hecheng'.$message['FromUserName'].'.jpg');
 
             // Array
             // (
