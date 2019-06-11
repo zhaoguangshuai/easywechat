@@ -34,7 +34,8 @@ class Index
         $obj = simplexml_load_string($input, 'SimpleXMLElement', LIBXML_NOCDATA);
         trace('微信json数据',json_encode($obj));
         $app = app('wechat.official_account');
-        $app->server->push(function ($message) {
+        //$app->server->push(function ($message) {
+        $message = json_decode(json_encode($obj), true);
             trace('message数据',json_encode($message));
             switch ($message['MsgType']) {
                 case 'event':
@@ -71,7 +72,7 @@ class Index
             }
 
             // ...
-        });
+        //});
         $app->server->serve()->send();
 
     }
