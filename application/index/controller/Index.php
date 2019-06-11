@@ -6,6 +6,7 @@ use EasyWeChat\Kernel\Messages\Text;
 use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
 use EasyWeChat\Kernel\Messages\Image;
+use app\index\helper\RedisHelper;
 
 class Index
 {
@@ -46,6 +47,7 @@ class Index
                     switch ($message['Event']) {
                         case 'subscribe':  //订阅公众号
                             //return $this->returnEvent($message);
+                            $resinfo = $this->sendMessage($message); //推送带参数的二维码图文消息
                             return '订阅公众号';
                             break;
                         case 'unsubscribe': //取消订阅公众号
@@ -62,9 +64,13 @@ class Index
                             break;
                         case 'CLICK':  //自定义菜单事件  点击菜单拉取消息时的事件推送
                             //return '自定义菜单事件  点击菜单拉取消息时的事件推送';
-                            $mediaid = $this->sendMessage($message); //推送带参数的二维码图文消息
-                            trace('素材id333333mediaid',$mediaid);
-                            return new Image($mediaid);
+                            if($message['EventKey'] == 'V1001_TODAY_MUSIC'){  //一元购点击事件
+                                return new Image(RedisHelper::getInstance()->get('source:mediaid:$message[\'FromUserName\']'));
+                            }elseif ($message['EventKey'] == 'V1001_GOOD'){ //赞一下我们点击事件
+
+                            }else{
+                                return '未知点击事件';
+                            }
                             break;
                         case 'VIEW':   //自定义菜单事件  点击菜单跳转链接时的事件推送
                             return '自定义菜单事件  点击菜单跳转链接时的事件推送';
@@ -189,6 +195,7 @@ class Index
             //$result = $app->media->uploadImage($hechengname);
             trace('上传素材返回信息',json_encode($result));
             //return new Image('6Y0ORPyd40WcARxy5vkmFzr49mVh8eIiqilneLrOX9w');
+            RedisHelper::getInstance()->set('source:mediaid:$message[\'FromUserName\']', $result['media_id']);
             return $result['media_id'];
 
             /*
