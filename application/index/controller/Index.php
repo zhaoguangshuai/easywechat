@@ -7,9 +7,11 @@ use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
 use EasyWeChat\Kernel\Messages\Image;
 use app\index\helper\RedisHelper;
+use EasyWeChat\Kernel\Messages\Raw;
 
 class Index
 {
+    public $app;
     public function index()
     {
     	/*$echoStr = $_GET["echostr"];
@@ -34,8 +36,8 @@ class Index
         trace('微信数据',$input);
         $obj = simplexml_load_string($input, 'SimpleXMLElement', LIBXML_NOCDATA);
         trace('微信json数据',json_encode($obj));
-        $app = app('wechat.official_account');
-        $app->server->push(function ($message) {
+        $this->app = app('wechat.official_account');
+        $this->app->server->push(function ($message) {
         //$message = json_decode(json_encode($obj), true);
             trace('message数据',json_encode($message));
             switch ($message['MsgType']) {
@@ -54,6 +56,7 @@ class Index
                             return '取消订阅公众号';
                             break;
                         case 'subscribe':  //扫描带参数二维码事件,用户未关注时，进行关注后的事件推送
+                            $this->sendHuodongXiao($message);
                             return '扫描带参数二维码事件,用户未关注时，进行关注后的事件推送';
                             break;
                         case 'SCAN':  //扫描带参数二维码事件,用户已经关注时，进行关注后的事件推送
@@ -109,8 +112,28 @@ class Index
 
             // ...
         });
-        $app->server->serve()->send();
+        $this->app->server->serve()->send();
 
+    }
+
+    //推送一元购活动消息，给分享的人发送已经有几个人关注了，现在是那个好友关注了
+    protected function sendHuodongXiao($message)
+    {
+        //获取分享用户的openid
+        $fxopenid = ltrim($message['EventKey'], 'qrscene_');
+        trace('分享用户openid',$fxopenid);
+        //给分享用户的分享关注数量加1
+        $count = RedisHelper::getInstance()->incr('subscribe:count:'.$fxopenid);
+        trace('关注数量加1redis返回信息',$count);
+        //当前关注用户的信息
+        $userinfo = $this->app->user->get($message['FromUserName']);
+        trace('当前关注用户的信息',json_encode($userinfo));
+        //给分享者推送消息
+        $fromUser = $message['ToUserName'];
+        $textcontent = '您的好友'.$userinfo['nickname'].'已经关注，已经有'.$count.'人通过您分享的二维码关注公众号!';
+        trace('给分享者推送消息内容',$textcontent);
+        $resmessage = new Raw("<xml><ToUserName><![CDATA[{$fxopenid}]]></ToUserName><FromUserName><![CDATA[{$fromUser}]]></FromUserName><CreateTime>12345678</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[{$textcontent}]]></Content></xml>");
+        trace('推送结果返回',json_encode($resmessage));
     }
 
     //设置菜单栏
@@ -150,10 +173,10 @@ class Index
     //推送带参数的二维码图文消息
     public function sendMessage($message)
     {
-            $app = app('wechat.official_account');
-            $result = $app->qrcode->temporary($message['FromUserName'], 6 * 24 * 3600);
+            //$app = app('wechat.official_account');
+            $result = $this->app->qrcode->temporary($message['FromUserName'], 6 * 24 * 3600);
             trace('获取带参数二维码',json_encode($result));
-            $url = $app->qrcode->url($result['ticket']);
+            $url = $this->app->qrcode->url($result['ticket']);
 
             $content = file_get_contents($url); // 得到二进制图片内容
 
@@ -173,7 +196,7 @@ class Index
 
             //将微信用户图片保存到本地
             //获取用户信息
-            $user = $app->user->get($message['FromUserName']);
+            $user = $this->app->user->get($message['FromUserName']);
             trace('用户信息',json_encode($user));
             $headimgcontent = file_get_contents($user['headimgurl']); // 得到二进制图片内容
             $headfilename = $path.'/headimg'.$message['FromUserName'].'.jpg';
@@ -190,7 +213,7 @@ class Index
             $image_url = 'http://easywechat.szbchm.com'.trim($hechengname,'.');
             trace('图片链接地址',$image_url);
             //$mediaIdres = $app->media->uploadImage($image_url);
-            $result = $app->material->uploadImage($hechengname);
+            $result = $this->app->material->uploadImage($hechengname);
             //$result = $app->media->uploadImage($hechengname);
             trace('上传素材返回信息',json_encode($result));
             //return new Image('6Y0ORPyd40WcARxy5vkmFzr49mVh8eIiqilneLrOX9w');
