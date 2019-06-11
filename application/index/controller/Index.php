@@ -51,12 +51,9 @@ class Index
                         $this->sendHuodongXiao($message); //给分享者推送消息
                         return 'success';
                     }else{
-                        if($message['Event'] == 'subscribe'){
-                            $this->sendMessage($message); //推送带参数的二维码图文消息
-                        }
                         switch ($message['Event']) {
                             case 'subscribe':  //订阅公众号
-                                //$resinfo = $this->sendMessage($message); //推送带参数的二维码图文消息
+                                $resinfo = $this->sendMessage($message); //推送带参数的二维码图文消息
                                 return '订阅公众号';
                                 break;
                             case 'unsubscribe': //取消订阅公众号
