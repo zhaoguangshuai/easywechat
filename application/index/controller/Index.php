@@ -65,7 +65,7 @@ class Index
                         case 'CLICK':  //自定义菜单事件  点击菜单拉取消息时的事件推送
                             //return '自定义菜单事件  点击菜单拉取消息时的事件推送';
                             if($message['EventKey'] == 'V1001_TODAY_MUSIC'){  //一元购点击事件
-                                return new Image(RedisHelper::getInstance()->get('source:mediaid:$message[\'FromUserName\']'));
+                                return new Image(RedisHelper::getInstance()->get('source:mediaid:'.$message['FromUserName']));
                             }elseif ($message['EventKey'] == 'V1001_GOOD'){ //赞一下我们点击事件
 
                             }else{
@@ -195,7 +195,7 @@ class Index
             //$result = $app->media->uploadImage($hechengname);
             trace('上传素材返回信息',json_encode($result));
             //return new Image('6Y0ORPyd40WcARxy5vkmFzr49mVh8eIiqilneLrOX9w');
-            RedisHelper::getInstance()->set('source:mediaid:$message[\'FromUserName\']', $result['media_id']);
+            RedisHelper::getInstance()->set('source:mediaid:'.$message['FromUserName'], $result['media_id']);
             return $result['media_id'];
 
             /*
@@ -262,6 +262,7 @@ class Index
     //设置菜单栏
     public function test()
     {
+        var_dump(RedisHelper::getInstance());exit;
         $app = app('wechat.official_account');
         $result = $app->material->uploadImage('.\static\wechat_img\20190610\qwer.jpg');
         //$res = $app->media->uploadImage('.\static\wechat_img\20190610\qwer.jpg');
