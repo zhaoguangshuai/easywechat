@@ -46,41 +46,46 @@ class Index
                     //$media_id = $this->returnEvent($message);
                     //return new Image($media_id);
                     //return new Image('6Y0ORPyd40WcARxy5vkmFzr49mVh8eIiqilneLrOX9w');
-                    switch ($message['Event']) {
-                        case 'subscribe':  //订阅公众号
-                            //return $this->returnEvent($message);
-                            $resinfo = $this->sendMessage($message); //推送带参数的二维码图文消息
-                            return '订阅公众号';
-                            break;
-                        case 'unsubscribe': //取消订阅公众号
-                            return '取消订阅公众号';
-                            break;
-                        case 'subscribe':  //扫描带参数二维码事件,用户未关注时，进行关注后的事件推送
-                            $this->sendHuodongXiao($message);
-                            return '扫描带参数二维码事件,用户未关注时，进行关注后的事件推送';
-                            break;
-                        case 'SCAN':  //扫描带参数二维码事件,用户已经关注时，进行关注后的事件推送
-                            return '扫描带参数二维码事件,用户已经关注时，进行关注后的事件推送';
-                            break;
-                        case 'LOCATION':  //上报地理位置事件
-                            return '上报地理位置事件';
-                            break;
-                        case 'CLICK':  //自定义菜单事件  点击菜单拉取消息时的事件推送
-                            //return '自定义菜单事件  点击菜单拉取消息时的事件推送';
-                            if($message['EventKey'] == 'V1001_TODAY_MUSIC'){  //一元购点击事件
-                                return new Image(RedisHelper::getInstance()->get('source:mediaid:'.$message['FromUserName']));
-                            }elseif ($message['EventKey'] == 'V1001_GOOD'){ //赞一下我们点击事件
-                                return '赞一下我们点击事件';
-                            }else{
-                                return '未知点击事件';
-                            }
-                            break;
-                        case 'VIEW':   //自定义菜单事件  点击菜单跳转链接时的事件推送
-                            return '自定义菜单事件  点击菜单跳转链接时的事件推送';
-                            break;
-                        default:
-                            return '收到其它消息';
-                            break;
+                    if($message['Event'] == 'subscribe' && !empty($message['EventKey'])){ //扫描带参数二维码事件,用户未关注时，进行关注后的事件推送
+                        $this->sendMessage($message); //生成推广二维码
+                        $this->sendHuodongXiao($message); //给分享者推送消息
+                    }else{
+                        switch ($message['Event']) {
+                            case 'subscribe':  //订阅公众号
+                                //return $this->returnEvent($message);
+                                $resinfo = $this->sendMessage($message); //推送带参数的二维码图文消息
+                                return '订阅公众号';
+                                break;
+                            case 'unsubscribe': //取消订阅公众号
+                                return '取消订阅公众号';
+                                break;
+                            /*case 'subscribe':  //扫描带参数二维码事件,用户未关注时，进行关注后的事件推送
+                                $this->sendHuodongXiao($message);
+                                return '扫描带参数二维码事件,用户未关注时，进行关注后的事件推送';
+                                break;*/
+                            case 'SCAN':  //扫描带参数二维码事件,用户已经关注时，进行关注后的事件推送
+                                return '扫描带参数二维码事件,用户已经关注时，进行关注后的事件推送';
+                                break;
+                            case 'LOCATION':  //上报地理位置事件
+                                return '上报地理位置事件';
+                                break;
+                            case 'CLICK':  //自定义菜单事件  点击菜单拉取消息时的事件推送
+                                //return '自定义菜单事件  点击菜单拉取消息时的事件推送';
+                                if($message['EventKey'] == 'V1001_TODAY_MUSIC'){  //一元购点击事件
+                                    return new Image(RedisHelper::getInstance()->get('source:mediaid:'.$message['FromUserName']));
+                                }elseif ($message['EventKey'] == 'V1001_GOOD'){ //赞一下我们点击事件
+                                    return '赞一下我们点击事件';
+                                }else{
+                                    return '未知点击事件';
+                                }
+                                break;
+                            case 'VIEW':   //自定义菜单事件  点击菜单跳转链接时的事件推送
+                                return '自定义菜单事件  点击菜单跳转链接时的事件推送';
+                                break;
+                            default:
+                                return '收到其它消息';
+                                break;
+                        }
                     }
                     break;
                 case 'text':
