@@ -115,8 +115,10 @@ class Index
                         'template_id' => 'SY_ifMultrJYu6QjNSzC0hWtfH28Oeeh3-rEU7nPauQ',
                         'url' => 'https://www.baidu.com/',
                         'data' => [
-                            '任务名称' => '一元购活动',
-                            '任务获得' => '获得一元钱购买一本挂历',
+                            'first' => '头部',
+                            'key1' => '一元购活动',
+                            'key2' => '获得一元钱购买一本挂历',
+                            'remark' => '尾部',
                 ],
             ]);
         //}
