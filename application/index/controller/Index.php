@@ -136,7 +136,7 @@ class Index
         //给分享者推送消息
         $textcontent = '您的好友'.$userinfo['nickname'].'已经关注，已经有'.$count.'人通过您分享的二维码关注公众号!';
         trace('给分享者推送消息内容',$textcontent);
-        $this->app->broadcasting->sendText($textcontent, [$fxopenid, $message['FromUserName']]);
+        $this->app->broadcasting->sendText($textcontent, [$fxopenid, 'tuffhgghhj']);
         /*$resmessage = new Raw("<xml><ToUserName><![CDATA[{$fxopenid}]]></ToUserName><FromUserName><![CDATA[{$fromUser}]]></FromUserName><CreateTime>12345678</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[{$textcontent}]]></Content></xml>");
         trace('推送结果返回',json_encode($resmessage));*/
     }
