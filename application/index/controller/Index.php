@@ -54,8 +54,9 @@ class Index
                         switch ($message['Event']) {
                             case 'subscribe':  //订阅公众号
                                 //return $this->returnEvent($message);
+                                echo 'success';
                                 $resinfo = $this->sendMessage($message); //推送带参数的二维码图文消息
-                                return 'success';
+                                //return 'success';
                                 break;
                             case 'unsubscribe': //取消订阅公众号
                                 return '取消订阅公众号';
