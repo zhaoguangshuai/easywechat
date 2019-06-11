@@ -196,7 +196,7 @@ class Index
             //return new Image('6Y0ORPyd40WcARxy5vkmFzr49mVh8eIiqilneLrOX9w');
             $res = RedisHelper::getInstance()->set('source:mediaid:'.$message['FromUserName'], $result['media_id']);
             trace('redis返回信息',$res);
-            return $result['media_id'];
+            //return $result['media_id'];
 
             /*
              *  title 标题
