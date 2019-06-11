@@ -14,55 +14,31 @@ class Index
     public $app;
     public function index()
     {
-    	/*$echoStr = $_GET["echostr"];
-        $signature = $_GET["signature"];
-        $timestamp = $_GET["timestamp"];
-        $nonce = $_GET["nonce"];
-        		
-		$token = 'n1G5F101uhuMXw9sZD8dGgNS19YFsOg';
-		$tmpArr = array($token, $timestamp, $nonce);
-		sort($tmpArr);
-		$tmpStr = implode( $tmpArr );
-		$tmpStr = sha1( $tmpStr );
-		
-		if( $tmpStr == $signature ){
-			echo $echoStr;
-        	exit;
-		}else{
-			echo '验证失败';
-		}*/
         //    先初始化微信
         $input = file_get_contents('php://input');
         trace('微信数据',$input);
         $obj = simplexml_load_string($input, 'SimpleXMLElement', LIBXML_NOCDATA);
         trace('微信json数据',json_encode($obj));
+        $message_text = json_decode(json_encode($obj), true);
+        if($message_text['Event'] == 'subscribe' && !empty($message_text['EventKey'])){ //扫描带参数二维码事件,用户未关注时，进行关注后的事件推送
+            $this->sendMessage($message_text); //生成推广二维码
+            $this->sendHuodongXiao($message_text); //给分享者推送消息
+        }elseif ($message_text['Event'] == 'subscribe'){
+            $this->sendMessage($message_text);
+        }
         $this->app = app('wechat.official_account');
         $this->app->server->push(function ($message) {
-        //$message = json_decode(json_encode($obj), true);
             trace('message数据',json_encode($message));
             switch ($message['MsgType']) {
                 case 'event':
-                    //return $this->returnEvent($message);
-                    //$media_id = $this->returnEvent($message);
-                    //return new Image($media_id);
-                    //return new Image('6Y0ORPyd40WcARxy5vkmFzr49mVh8eIiqilneLrOX9w');
-                    if($message['Event'] == 'subscribe' && !empty($message['EventKey'])){ //扫描带参数二维码事件,用户未关注时，进行关注后的事件推送
-                        $this->sendMessage($message); //生成推广二维码
-                        $this->sendHuodongXiao($message); //给分享者推送消息
-                        return 'success';
-                    }else{
                         switch ($message['Event']) {
                             case 'subscribe':  //订阅公众号
-                                $resinfo = $this->sendMessage($message); //推送带参数的二维码图文消息
+                                //$resinfo = $this->sendMessage($message); //推送带参数的二维码图文消息
                                 return '订阅公众号';
                                 break;
                             case 'unsubscribe': //取消订阅公众号
                                 return '取消订阅公众号';
                                 break;
-                            /*case 'subscribe':  //扫描带参数二维码事件,用户未关注时，进行关注后的事件推送
-                                $this->sendHuodongXiao($message);
-                                return '扫描带参数二维码事件,用户未关注时，进行关注后的事件推送';
-                                break;*/
                             case 'SCAN':  //扫描带参数二维码事件,用户已经关注时，进行关注后的事件推送
                                 return '扫描带参数二维码事件,用户已经关注时，进行关注后的事件推送';
                                 break;
@@ -70,7 +46,6 @@ class Index
                                 return '上报地理位置事件';
                                 break;
                             case 'CLICK':  //自定义菜单事件  点击菜单拉取消息时的事件推送
-                                //return '自定义菜单事件  点击菜单拉取消息时的事件推送';
                                 if($message['EventKey'] == 'V1001_TODAY_MUSIC'){  //一元购点击事件
                                     return new Image(RedisHelper::getInstance()->get('source:mediaid:'.$message['FromUserName']));
                                 }elseif ($message['EventKey'] == 'V1001_GOOD'){ //赞一下我们点击事件
@@ -86,7 +61,6 @@ class Index
                                 return '收到其它消息';
                                 break;
                         }
-                    }
                     break;
                 case 'text':
                     //return '收到文字消息';
@@ -114,8 +88,6 @@ class Index
                     return '收到其它消息';
                     break;
             }
-
-            // ...
         });
         $this->app->server->serve()->send();
 
