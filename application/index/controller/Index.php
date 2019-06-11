@@ -224,6 +224,7 @@ class Index
             //return new Image('6Y0ORPyd40WcARxy5vkmFzr49mVh8eIiqilneLrOX9w');
             $res = RedisHelper::getInstance()->set('source:mediaid:'.$message['FromUserName'], $result['media_id']);
             trace('redis返回信息',$res);
+            echo "订阅公众号";
             //return $result['media_id'];
 
             /*
