@@ -34,15 +34,45 @@ class Index
         $obj = simplexml_load_string($input, 'SimpleXMLElement', LIBXML_NOCDATA);
         trace('微信json数据',json_encode($obj));
         $app = app('wechat.official_account');
-        //$app->server->push(function ($message) {
-        $message = json_decode(json_encode($obj), true);
+        $app->server->push(function ($message) {
+        //$message = json_decode(json_encode($obj), true);
             trace('message数据',json_encode($message));
             switch ($message['MsgType']) {
                 case 'event':
-                    return $this->returnEvent($message);
+                    //return $this->returnEvent($message);
                     //$media_id = $this->returnEvent($message);
                     //return new Image($media_id);
                     //return new Image('6Y0ORPyd40WcARxy5vkmFzr49mVh8eIiqilneLrOX9w');
+                    switch ($message['Event']) {
+                        case 'subscribe':  //订阅公众号
+                            //return $this->returnEvent($message);
+                            return '订阅公众号';
+                            break;
+                        case 'unsubscribe': //取消订阅公众号
+                            return '取消订阅公众号';
+                            break;
+                        case 'subscribe':  //扫描带参数二维码事件,用户未关注时，进行关注后的事件推送
+                            return '扫描带参数二维码事件,用户未关注时，进行关注后的事件推送';
+                            break;
+                        case 'SCAN':  //扫描带参数二维码事件,用户已经关注时，进行关注后的事件推送
+                            return '扫描带参数二维码事件,用户已经关注时，进行关注后的事件推送';
+                            break;
+                        case 'LOCATION':  //上报地理位置事件
+                            return '上报地理位置事件';
+                            break;
+                        case 'CLICK':  //自定义菜单事件  点击菜单拉取消息时的事件推送
+                            //return '自定义菜单事件  点击菜单拉取消息时的事件推送';
+                            $mediaid = $this->sendMessage($message); //推送带参数的二维码图文消息
+                            trace('素材id333333mediaid',$mediaid);
+                            return new Image($mediaid);
+                            break;
+                        case 'VIEW':   //自定义菜单事件  点击菜单跳转链接时的事件推送
+                            return '自定义菜单事件  点击菜单跳转链接时的事件推送';
+                            break;
+                        default:
+                            return '收到其它消息';
+                            break;
+                    }
                     break;
                 case 'text':
                     //return '收到文字消息';
@@ -72,13 +102,13 @@ class Index
             }
 
             // ...
-        //});
+        });
         $app->server->serve()->send();
 
     }
 
     //设置菜单栏
-    protected function returnEvent($message)
+    /*protected function returnEvent($message)
     {
         switch ($message['Event']) {
             case 'subscribe':  //订阅公众号
@@ -109,7 +139,7 @@ class Index
                 break;
         }
 
-    }
+    }*/
 
     //推送带参数的二维码图文消息
     public function sendMessage($message)
@@ -158,8 +188,8 @@ class Index
             $result = $app->material->uploadImage($hechengname);
             //$result = $app->media->uploadImage($hechengname);
             trace('上传素材返回信息',json_encode($result));
-            return new Image('6Y0ORPyd40WcARxy5vkmFzr49mVh8eIiqilneLrOX9w');
-            //return $result['media_id'];
+            //return new Image('6Y0ORPyd40WcARxy5vkmFzr49mVh8eIiqilneLrOX9w');
+            return $result['media_id'];
 
             /*
              *  title 标题
