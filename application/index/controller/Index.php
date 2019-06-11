@@ -38,10 +38,10 @@ class Index
             trace('message数据',json_encode($message));
             switch ($message['MsgType']) {
                 case 'event':
-                    //return $this->returnEvent($message);
+                    return $this->returnEvent($message);
                     //$media_id = $this->returnEvent($message);
                     //return new Image($media_id);
-                    return new Image('6Y0ORPyd40WcARxy5vkmFzr49mVh8eIiqilneLrOX9w');
+                    //return new Image('6Y0ORPyd40WcARxy5vkmFzr49mVh8eIiqilneLrOX9w');
                     break;
                 case 'text':
                     //return '收到文字消息';
@@ -157,7 +157,8 @@ class Index
             $result = $app->material->uploadImage($hechengname);
             //$result = $app->media->uploadImage($hechengname);
             trace('上传素材返回信息',json_encode($result));
-            return $result['media_id'];
+            return new Image('6Y0ORPyd40WcARxy5vkmFzr49mVh8eIiqilneLrOX9w');
+            //return $result['media_id'];
 
             /*
              *  title 标题
