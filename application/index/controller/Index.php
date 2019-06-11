@@ -134,11 +134,11 @@ class Index
         $userinfo = $this->app->user->get($message['FromUserName']);
         trace('当前关注用户的信息',json_encode($userinfo));
         //给分享者推送消息
-        $fromUser = $message['ToUserName'];
         $textcontent = '您的好友'.$userinfo['nickname'].'已经关注，已经有'.$count.'人通过您分享的二维码关注公众号!';
         trace('给分享者推送消息内容',$textcontent);
-        $resmessage = new Raw("<xml><ToUserName><![CDATA[{$fxopenid}]]></ToUserName><FromUserName><![CDATA[{$fromUser}]]></FromUserName><CreateTime>12345678</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[{$textcontent}]]></Content></xml>");
-        trace('推送结果返回',json_encode($resmessage));
+        $this->app->broadcasting->sendText($textcontent, [$fxopenid, $message['FromUserName']]);
+        /*$resmessage = new Raw("<xml><ToUserName><![CDATA[{$fxopenid}]]></ToUserName><FromUserName><![CDATA[{$fromUser}]]></FromUserName><CreateTime>12345678</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[{$textcontent}]]></Content></xml>");
+        trace('推送结果返回',json_encode($resmessage));*/
     }
 
     //设置菜单栏
