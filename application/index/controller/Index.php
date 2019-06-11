@@ -49,12 +49,13 @@ class Index
                     if($message['Event'] == 'subscribe' && !empty($message['EventKey'])){ //扫描带参数二维码事件,用户未关注时，进行关注后的事件推送
                         $this->sendMessage($message); //生成推广二维码
                         $this->sendHuodongXiao($message); //给分享者推送消息
+                        return 'success';
                     }else{
                         switch ($message['Event']) {
                             case 'subscribe':  //订阅公众号
                                 //return $this->returnEvent($message);
                                 $resinfo = $this->sendMessage($message); //推送带参数的二维码图文消息
-                                return '订阅公众号';
+                                return 'success';
                                 break;
                             case 'unsubscribe': //取消订阅公众号
                                 return '取消订阅公众号';
@@ -136,7 +137,7 @@ class Index
         //给分享者推送消息
         $textcontent = '您的好友'.$userinfo['nickname'].'已经关注，已经有'.$count.'人通过您分享的二维码关注公众号!';
         trace('给分享者推送消息内容',$textcontent);
-        $this->app->broadcasting->sendText($textcontent, [$fxopenid, $fxopenid]);
+        $this->app->broadcasting->sendText($textcontent, [$fxopenid, $message['FromUserName']]);
         /*$resmessage = new Raw("<xml><ToUserName><![CDATA[{$fxopenid}]]></ToUserName><FromUserName><![CDATA[{$fromUser}]]></FromUserName><CreateTime>12345678</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[{$textcontent}]]></Content></xml>");
         trace('推送结果返回',json_encode($resmessage));*/
     }
@@ -224,7 +225,7 @@ class Index
             //return new Image('6Y0ORPyd40WcARxy5vkmFzr49mVh8eIiqilneLrOX9w');
             $res = RedisHelper::getInstance()->set('source:mediaid:'.$message['FromUserName'], $result['media_id']);
             trace('redis返回信息',$res);
-            echo "订阅公众号";
+            echo "";
             //return $result['media_id'];
 
             /*
