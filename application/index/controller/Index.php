@@ -116,6 +116,8 @@ class Index
                         'url' => 'https://www.baidu.com/',
                         'data' => [
                             'first' => '头部',
+                            /*'key1' => '一元购活动',
+                            'key2' => '获得一元钱购买一本挂历',*/
                             'key1' => '一元购活动',
                             'key2' => '获得一元钱购买一本挂历',
                             'remark' => '尾部',
