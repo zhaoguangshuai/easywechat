@@ -150,7 +150,6 @@ class Index
     //推送带参数的二维码图文消息
     public function sendMessage($message)
     {
-        if($message['EventKey'] == 'V1001_TODAY_MUSIC'){  //一元购点击事件
             $app = app('wechat.official_account');
             $result = $app->qrcode->temporary($message['FromUserName'], 6 * 24 * 3600);
             trace('获取带参数二维码',json_encode($result));
@@ -195,7 +194,8 @@ class Index
             //$result = $app->media->uploadImage($hechengname);
             trace('上传素材返回信息',json_encode($result));
             //return new Image('6Y0ORPyd40WcARxy5vkmFzr49mVh8eIiqilneLrOX9w');
-            RedisHelper::getInstance()->set('source:mediaid:'.$message['FromUserName'], $result['media_id']);
+            $res = RedisHelper::getInstance()->set('source:mediaid:'.$message['FromUserName'], $result['media_id']);
+            trace('redis返回信息',$res);
             return $result['media_id'];
 
             /*
@@ -216,12 +216,6 @@ class Index
             ];
             return new News($items);*/
 
-
-        }elseif ($message['EventKey'] == 'V1001_GOOD'){ //赞一下我们点击事件
-
-        }else{
-            return '未知点击事件';
-        }
 
     }
 
