@@ -67,7 +67,7 @@ class Index
                             if($message['EventKey'] == 'V1001_TODAY_MUSIC'){  //一元购点击事件
                                 return new Image(RedisHelper::getInstance()->get('source:mediaid:'.$message['FromUserName']));
                             }elseif ($message['EventKey'] == 'V1001_GOOD'){ //赞一下我们点击事件
-
+                                return '赞一下我们点击事件';
                             }else{
                                 return '未知点击事件';
                             }
