@@ -20,13 +20,13 @@ class Index
         $obj = simplexml_load_string($input, 'SimpleXMLElement', LIBXML_NOCDATA);
         trace('微信json数据',json_encode($obj));
         $message_text = json_decode(json_encode($obj), true);
+        $this->app = app('wechat.official_account');
         if($message_text['Event'] == 'subscribe' && !empty($message_text['EventKey'])){ //扫描带参数二维码事件,用户未关注时，进行关注后的事件推送
             $this->sendMessage($message_text); //生成推广二维码
             $this->sendHuodongXiao($message_text); //给分享者推送消息
         }elseif ($message_text['Event'] == 'subscribe'){
             $this->sendMessage($message_text);
         }
-        $this->app = app('wechat.official_account');
         $this->app->server->push(function ($message) {
             trace('message数据',json_encode($message));
             switch ($message['MsgType']) {
