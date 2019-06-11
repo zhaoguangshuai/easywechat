@@ -109,18 +109,17 @@ class Index
         $textcontent = '您的好友'.$userinfo['nickname'].'已经关注，已经有'.$count.'人通过您分享的二维码关注公众号!';
         trace('给分享者推送消息内容',$textcontent);
         //$this->app->broadcasting->sendText($textcontent, [$fxopenid, $message['FromUserName']]);
-        if($count == 2){
-            $this->app->template_message->sendSubscription([
+        //if($count == 2){
+            $this->app->template_message->send([
                         'touser' => $fxopenid,
                         'template_id' => 'SY_ifMultrJYu6QjNSzC0hWtfH28Oeeh3-rEU7nPauQ',
                         'url' => 'https://www.baidu.com/',
-                        'scene' => 1000,
                         'data' => [
                             '任务名称' => '一元购活动',
                             '任务获得' => '获得一元钱购买一本挂历',
                 ],
             ]);
-        }
+        //}
         /*$resmessage = new Raw("<xml><ToUserName><![CDATA[{$fxopenid}]]></ToUserName><FromUserName><![CDATA[{$fromUser}]]></FromUserName><CreateTime>12345678</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[{$textcontent}]]></Content></xml>");
         trace('推送结果返回',json_encode($resmessage));*/
     }
