@@ -115,12 +115,10 @@ class Index
                         'template_id' => 'SY_ifMultrJYu6QjNSzC0hWtfH28Oeeh3-rEU7nPauQ',
                         'url' => 'https://www.baidu.com/',
                         'data' => [
-                            'first' => '头部',
-                            'foo' => '你好',  // 不需要指定颜色
-                            'bar' => ['你好', '#F00'], // 指定为红色
-                            'baz' => ['value' => '你好', 'color' => '#550038'], // 与第二种一样
-                            'zoo' => ['value' => '你好'], // 与第一种一样
-                            'remark' => '尾部',
+                            'first' => '头部111',
+                            'keynote1' => ['你好', '#F00'], // 指定为红色
+                            'keynote2' => ['value' => '你好', 'color' => '#550038'], // 与第二种一样
+                            'remark' => '尾部222',
                         ],
                     ]);
         //}
