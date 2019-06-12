@@ -28,7 +28,8 @@ class Index
                         switch ($message['Event']) {
                             case 'subscribe':  //订阅公众号
                                 //$resinfo = $this->sendMessage($message); //推送带参数的二维码图文消息
-                                return '订阅公众号';
+                                return '欢迎关注帅帅demo公众号!本公众号正在做一元购活动,分享推广二维码邀请十位好友关注本公众号即可一元购买IPhone XS。
+                                发送“一元购”消息即可获取当前有几位好友给你助力。';
                                 break;
                             case 'unsubscribe': //取消订阅公众号
                                 return '取消订阅公众号';
