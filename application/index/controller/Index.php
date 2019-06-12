@@ -41,7 +41,6 @@ class Index
                                 break;
                             case 'CLICK':  //自定义菜单事件  点击菜单拉取消息时的事件推送
                                 if($message['EventKey'] == 'V1001_TODAY_MUSIC'){  //一元购点击事件
-                                    new Text('您好！overtrue。');
                                     return new Image(RedisHelper::getInstance()->get('source:mediaid:'.$message['FromUserName']));
                                 }elseif ($message['EventKey'] == 'V1001_GOOD'){ //赞一下我们点击事件
                                     //return '赞一下我们点击事件';
@@ -69,7 +68,17 @@ class Index
                     break;
                 case 'text':
                     //return '收到文字消息';
-                    return new Text('您好！overtrue。');
+                    if($message['Content'] == '一元购'){
+                        $count = RedisHelper::getInstance()->get('subscribe:count:'.$message['FromUserName']);
+                        $textcontent = '已经有'.$count.'人通过您分享的二维码关注公众号!';
+                        return new Text($textcontent);
+                    }elseif ($message['Content'] == '我是谁'){
+                        //用户的信息
+                        $userinfo = $this->app->user->get($message['FromUserName']);
+                        return new Text('My name is '.$userinfo['nickname']);
+                    }else{
+                        return new Text('您好！帅那个帅。');
+                    }
                     break;
                 case 'image':
                     return '收到图片消息';
