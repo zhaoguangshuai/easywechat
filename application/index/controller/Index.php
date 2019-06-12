@@ -41,6 +41,7 @@ class Index
                                 break;
                             case 'CLICK':  //自定义菜单事件  点击菜单拉取消息时的事件推送
                                 if($message['EventKey'] == 'V1001_TODAY_MUSIC'){  //一元购点击事件
+                                    new Text('您好！overtrue。');
                                     return new Image(RedisHelper::getInstance()->get('source:mediaid:'.$message['FromUserName']));
                                 }elseif ($message['EventKey'] == 'V1001_GOOD'){ //赞一下我们点击事件
                                     //return '赞一下我们点击事件';
@@ -49,7 +50,7 @@ class Index
                                         new NewsItem([
                                             'title'       => '一元购',
                                             'description' => '分享二维码,邀请十位好友关注公众号就可以一元购买挂历。',
-                                            'url'         => 'www.beidu.com',
+                                            'url'         => 'www.baidu.com',
                                             'image'       => $image_url,
                                         ]),
                                     ];
