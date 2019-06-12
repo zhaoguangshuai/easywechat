@@ -116,19 +116,13 @@ class Index
                         'url' => 'https://www.baidu.com/',
                         'data' => [
                             'first' => '头部',
-                            /*'key1' => '一元购活动',
-                            'key2' => '获得一元钱购买一本挂历',*/
-                            'title' => [
-                                'value' => '一元购活动',
-                                'color' => '#550038'
-                            ],
-                            'content' => [
-                                'value' => '获得一元钱购买一本挂历',
-                                'color' => '#550038'
-                            ],
+                            'foo' => '你好',  // 不需要指定颜色
+                            'bar' => ['你好', '#F00'], // 指定为红色
+                            'baz' => ['value' => '你好', 'color' => '#550038'], // 与第二种一样
+                            'zoo' => ['value' => '你好'], // 与第一种一样
                             'remark' => '尾部',
-                ],
-            ]);
+                        ],
+                    ]);
         //}
         /*$resmessage = new Raw("<xml><ToUserName><![CDATA[{$fxopenid}]]></ToUserName><FromUserName><![CDATA[{$fromUser}]]></FromUserName><CreateTime>12345678</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[{$textcontent}]]></Content></xml>");
         trace('推送结果返回',json_encode($resmessage));*/
