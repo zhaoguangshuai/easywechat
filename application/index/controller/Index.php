@@ -70,6 +70,7 @@ class Index
                     //return '收到文字消息';
                     if($message['Content'] == '一元购'){
                         $count = RedisHelper::getInstance()->get('subscribe:count:'.$message['FromUserName']);
+                        $count == '' ? $count = 0 : $count = $count;
                         $textcontent = '已经有'.$count.'人通过您分享的二维码关注公众号!';
                         return new Text($textcontent);
                     }elseif ($message['Content'] == '我是谁'){
@@ -104,13 +105,16 @@ class Index
             }
         });
         $this->app->server->serve()->send();
-        if($message_text['Event'] == 'subscribe' && !empty($message_text['EventKey'])){ //扫描带参数二维码事件,用户未关注时，进行关注后的事件推送
-            $this->sendMessage($message_text); //生成推广二维码
-            $this->sendHuodongXiao($message_text); //给分享者推送消息
-        }elseif ($message_text['Event'] == 'subscribe'){
-            $this->sendMessage($message_text);
+        //判断当前用户是否已经关注过公众号，没有关注过就生成推广二维码，关注过就不用生成了
+        $ismemres = RedisHelper::getInstance()->sIsMember('follow:aggregate',$message_text['FromUserName']);
+        if (empty($ismemres)){
+            if($message_text['Event'] == 'subscribe' && !empty($message_text['EventKey'])){ //扫描带参数二维码事件,用户未关注时，进行关注后的事件推送
+                $this->sendHuodongXiao($message_text); //给分享者推广人数加1，并推送模板消息
+                $this->sendMessage($message_text); //生成推广二维码
+            }elseif ($message_text['Event'] == 'subscribe'){  //手动搜索关注公众号
+                $this->sendMessage($message_text);  //生成推广二维码
+            }
         }
-
     }
 
     //推送一元购活动消息，给分享的人发送已经有几个人关注了，现在是那个好友关注了
@@ -126,21 +130,21 @@ class Index
         $userinfo = $this->app->user->get($message['FromUserName']);
         trace('当前关注用户的信息',json_encode($userinfo));
         //给分享者推送消息
-        $textcontent = '您的好友'.$userinfo['nickname'].'已经关注，已经有'.$count.'人通过您分享的二维码关注公众号!';
+        $textcontent = '好友'.$userinfo['nickname'].'已关注，已有'.$count.'人助力您!';
         trace('给分享者推送消息内容',$textcontent);
         //$this->app->broadcasting->sendText($textcontent, [$fxopenid, $message['FromUserName']]);
         //if($count == 2){
-            $this->app->template_message->send([
-                        'touser' => $fxopenid,
-                        'template_id' => 'SY_ifMultrJYu6QjNSzC0hWtfH28Oeeh3-rEU7nPauQ',
-                        'url' => 'https://www.baidu.com/',
-                        'data' => [
-                            'first' => '头部111',
-                            'keynote1' => ['你好', '#F00'], // 指定为红色
-                            'keynote2' => ['value' => '你好', 'color' => '#550038'], // 与第二种一样
-                            'remark' => '尾部222',
-                        ],
-                    ]);
+        $this->app->template_message->send([
+                    'touser' => $fxopenid,
+                    'template_id' => 'SY_ifMultrJYu6QjNSzC0hWtfH28Oeeh3-rEU7nPauQ',
+                    'url' => 'https://www.baidu.com/',
+                    'data' => [
+                        'first' => '至尊乐欢迎您！',
+                        'keynote1' => ['一元购活动', '#F00'], // 指定为红色
+                        'keynote2' => ['value' => $textcontent, 'color' => '#F00'], // 与第二种一样
+                        'remark' => '至尊乐欢迎您',
+                    ],
+                ]);
         //}
         /*$resmessage = new Raw("<xml><ToUserName><![CDATA[{$fxopenid}]]></ToUserName><FromUserName><![CDATA[{$fromUser}]]></FromUserName><CreateTime>12345678</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[{$textcontent}]]></Content></xml>");
         trace('推送结果返回',json_encode($resmessage));*/
@@ -183,53 +187,53 @@ class Index
     //推送带参数的二维码图文消息
     public function sendMessage($message)
     {
-            //$app = app('wechat.official_account');
-            $result = $this->app->qrcode->temporary($message['FromUserName'], 6 * 24 * 3600);
-            trace('获取带参数二维码',json_encode($result));
-            $url = $this->app->qrcode->url($result['ticket']);
+        //将关注的用户加入有续集
+        RedisHelper::getInstance()->sAdd('follow:aggregate',$message['FromUserName']);
+        $result = $this->app->qrcode->temporary($message['FromUserName'], 6 * 24 * 3600);
+        trace('获取带参数二维码',json_encode($result));
+        $url = $this->app->qrcode->url($result['ticket']);
 
-            $content = file_get_contents($url); // 得到二进制图片内容
+        $content = file_get_contents($url); // 得到二进制图片内容
 
-            $path = './static/wechat_img/'.date('Ymd');
-            trace('图片保存路径',$path);
-            if(!file_exists($path))
-            {
-                //检查是否有该文件夹，如果没有就创建，并给予最高权限
-                mkdir($path, 0777);
-            }
+        $path = './static/wechat_img/'.date('Ymd');
+        trace('图片保存路径',$path);
+        if(!file_exists($path))
+        {
+            //检查是否有该文件夹，如果没有就创建，并给予最高权限
+            mkdir($path, 0777);
+        }
 
-            $filename = $path.'/qr'.$message['FromUserName'].'.jpg';
-            trace('文件保存路径',$filename);
-            //将带参数的二维码保存到服务器
-            $res = file_put_contents($filename, $content); // 写入文件
-            trace('文件写入返回值1',$res);
+        $filename = $path.'/qr'.$message['FromUserName'].'.jpg';
+        trace('文件保存路径',$filename);
+        //将带参数的二维码保存到服务器
+        $res = file_put_contents($filename, $content); // 写入文件
+        trace('文件写入返回值1',$res);
 
-            //将微信用户图片保存到本地
-            //获取用户信息
-            $user = $this->app->user->get($message['FromUserName']);
-            trace('用户信息',json_encode($user));
-            $headimgcontent = file_get_contents($user['headimgurl']); // 得到二进制图片内容
-            $headfilename = $path.'/headimg'.$message['FromUserName'].'.jpg';
-            //将该用户微信图片保存到服务器
-            $res2 = file_put_contents($headfilename, $headimgcontent); // 写入文件
-            trace('文件写入返回值2',$res2);
+        //将微信用户图片保存到本地
+        //获取用户信息
+        $user = $this->app->user->get($message['FromUserName']);
+        trace('用户信息',json_encode($user));
+        $headimgcontent = file_get_contents($user['headimgurl']); // 得到二进制图片内容
+        $headfilename = $path.'/headimg'.$message['FromUserName'].'.jpg';
+        //将该用户微信图片保存到服务器
+        $res2 = file_put_contents($headfilename, $headimgcontent); // 写入文件
+        trace('文件写入返回值2',$res2);
 
-            $image = \think\Image::open($filename);
-            // 添加水印图片
-            $hechengname = $path.'/hecheng'.$message['FromUserName'].'.jpg';
-            $image->water($headfilename,\think\Image::WATER_SOUTHEAST)->text($user['nickname'],'simkai.ttf',20,'#FF3030',\think\Image::WATER_SOUTHWEST)->save($hechengname);
-            trace('测试日志',1111111111111111);
-            //分享图片链接地址
-            $image_url = 'http://easywechat.szbchm.com'.trim($hechengname,'.');
-            trace('图片链接地址',$image_url);
-            //$mediaIdres = $app->media->uploadImage($image_url);
-            $result = $this->app->material->uploadImage($hechengname);
-            //$result = $app->media->uploadImage($hechengname);
-            trace('上传素材返回信息',json_encode($result));
-            //return new Image('6Y0ORPyd40WcARxy5vkmFzr49mVh8eIiqilneLrOX9w');
-            $res = RedisHelper::getInstance()->set('source:mediaid:'.$message['FromUserName'], $result['media_id']);
-            trace('redis返回信息',$res);
-            echo "";
+        $image = \think\Image::open($filename);
+        // 添加水印图片
+        $hechengname = $path.'/hecheng'.$message['FromUserName'].'.jpg';
+        $image->water($headfilename,\think\Image::WATER_SOUTHEAST)->text($user['nickname'],'simkai.ttf',20,'#FF3030',\think\Image::WATER_SOUTHWEST)->save($hechengname);
+        trace('测试日志',1111111111111111);
+        //分享图片链接地址
+        $image_url = 'http://easywechat.szbchm.com'.trim($hechengname,'.');
+        trace('图片链接地址',$image_url);
+        //$mediaIdres = $app->media->uploadImage($image_url);
+        $result = $this->app->material->uploadImage($hechengname);
+        //$result = $app->media->uploadImage($hechengname);
+        trace('上传素材返回信息',json_encode($result));
+        //return new Image('6Y0ORPyd40WcARxy5vkmFzr49mVh8eIiqilneLrOX9w');
+        $res = RedisHelper::getInstance()->set('source:mediaid:'.$message['FromUserName'], $result['media_id']);
+        trace('redis返回信息',$res);
             //return $result['media_id'];
 
             /*
