@@ -5,10 +5,24 @@
     <title>测试网页授权</title>
 </head>
 <body>
-<h1>测试easywechat网页授权</h1>
-<h2>测试easywechat网页授权</h2>
-<h3>测试easywechat网页授权</h3>
-<h4>测试easywechat网页授权</h4>
-<h5>测试easywechat网页授权</h5>
+<h1>测试easywechat网页授权,获取用户信息</h1>
+<h2>测试easywechat网页授权,获取用户信息</h2>
+<h3>测试easywechat网页授权,获取用户信息</h3>
+<h4>测试easywechat网页授权,获取用户信息</h4>
+<h5>测试easywechat网页授权,获取用户信息</h5>
+用户昵称:{$userinfo.nickname}
+<br/>
+用户性别:
+{if ( $userinfo['sex'] == 1)}
+男性
+{elseif $userinfo['sex'] == 2 /}
+女性
+{else /}
+未知
+{/if}
+<br/>
+用户openid:{$userinfo.openid}
+<br/>
+用户unionid:{$userinfo.unionid}
 </body>
 </html>

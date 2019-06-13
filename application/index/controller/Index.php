@@ -313,8 +313,8 @@ class Index extends Controller
     {
         $config = [
             'debug'   => true,
-            'app_id'  => 'wxbf34ee861a89cc1c',
-            'secret'  => 'a6b8adc5dd702f6e21b386e10d0df1c9',
+            'app_id'  => config('wechat.official_account.default.app_id'),
+            'secret'  =>config('wechat.official_account.default.secret'),
             /*'token'   => DynamicConfig::WECHAT_TOKEN,
 //            'aes_key' => 'KonTCWjsdo4UGiLGCEnmIMClRZzfegzJx3kOqGSOfX0', // 可选
             'log'     => [
@@ -339,8 +339,8 @@ class Index extends Controller
     {
         $config = [
             'debug'   => true,
-            'app_id'  => 'wxbf34ee861a89cc1c',
-            'secret'  => 'a6b8adc5dd702f6e21b386e10d0df1c9',
+            'app_id'  => config('wechat.official_account.default.app_id'),
+            'secret'  =>config('wechat.official_account.default.secret'),
             /*'token'   => DynamicConfig::WECHAT_TOKEN,
 //            'aes_key' => 'KonTCWjsdo4UGiLGCEnmIMClRZzfegzJx3kOqGSOfX0', // 可选
             'log'     => [
@@ -361,16 +361,25 @@ class Index extends Controller
 
         $wechat_user = $user->toArray();
         trace('授权重定向用户信息',json_encode($wechat_user));
-        //将用户信息保存到redis
-        //if(!empty($wechat_user))
+        //判断该用户信息是否已经存到过redis
+        if(!RedisHelper::getInstance()->exists('userinfo:'.$wechat_user['original']['openid'])){
+            //将用户信息保存到redis
+            RedisHelper::getInstance()->hMSet('userinfo:'.$wechat_user['original']['openid'], $wechat_user['original']);
+        }
 
-        $targetUrl = 'http://easywechat.szbchm.com/index.php/Index/index/showWebPage';
+
+        $targetUrl = 'http://easywechat.szbchm.com/index.php/Index/index/showWebPage?openid='.$wechat_user['original']['openid'];
         header('location:'. $targetUrl); // 跳转到 user/profile
     }
 
     //最后所展示的网页
     public function showWebPage()
     {
+        $openid = \request()->get('openid');
+        //获取用户数据
+        $userInfo = RedisHelper::getInstance()->hGetAll('userinfo:'.$openid);
+        $this->assign('userinfo', $userInfo);
+        //$this->assign('userinfo', ['sex'=>'2']);
         return $this->fetch();
     }
 }
