@@ -338,7 +338,19 @@ class Index extends Controller
     public function oauth_callback()
     {
         $config = [
-            // ...
+            'debug'   => true,
+            'app_id'  => 'wxbf34ee861a89cc1c',
+            'secret'  => 'a6b8adc5dd702f6e21b386e10d0df1c9',
+            /*'token'   => DynamicConfig::WECHAT_TOKEN,
+//            'aes_key' => 'KonTCWjsdo4UGiLGCEnmIMClRZzfegzJx3kOqGSOfX0', // 可选
+            'log'     => [
+                'level' => 'debug',
+                'file'  => APP_ROOT_PATH . '/../logs/Home_easywechat.log', // XXX: 绝对路径！！！！
+            ],*/
+            'oauth' => [
+                'scopes'   => ['snsapi_userinfo'],
+                'callback' => 'http://easywechat.szbchm.com/index.php/Index/index/oauth_callback',
+            ],
         ];
 
         $app = Factory::officialAccount($config);
