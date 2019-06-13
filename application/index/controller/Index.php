@@ -7,9 +7,9 @@ use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
 use EasyWeChat\Kernel\Messages\Image;
 use app\index\helper\RedisHelper;
-use EasyWeChat\Kernel\Messages\Raw;
+use EasyWeChat\Factory;
 
-class Index
+class Index extends Controller
 {
     public $app;
     public function index()
@@ -272,8 +272,8 @@ class Index
                 "sub_button" => [
                     [
                         "type" => "view",
-                        "name" => "搜索",
-                        "url"  => "http://www.baidu.com/"
+                        "name" => "网页授权",
+                        "url"  => "http://easywechat.szbchm.com/index.php/Index/index/testWebOauth"
                     ],
                     [
                         "type" => "view",
@@ -306,5 +306,50 @@ class Index
         // 给原图左上角添加水印并保存water_image.png
         $zhongjiname = '.\static\wechat_img\20190610\zhongji.jpg';
         $images->text('帅帅','simkai.ttf',20,'#FF3030',\think\Image::WATER_SOUTHEAST)->save($zhongjiname);
+    }
+
+    //测试网页授权
+    public function testWebOauth()
+    {
+        $config = [
+            'oauth' => [
+                'scopes'   => ['snsapi_userinfo'],
+                'callback' => 'http://easywechat.szbchm.com/index.php/Index/index/oauth_callback',
+            ],
+        ];
+        $app = Factory::officialAccount($config);
+        $oauth = $app->oauth;
+        //return $oauth->redirect();
+        // 这里不一定是return，如果你的框架action不是返回内容的话你就得使用
+        $oauth->redirect()->send();
+
+    }
+
+    //授权后重定向的回调链接地址
+    public function oauth_callback()
+    {
+        $config = [
+            // ...
+        ];
+
+        $app = Factory::officialAccount($config);
+        $oauth = $app->oauth;
+
+        // 获取 OAuth 授权结果用户信息
+        $user = $oauth->user();
+
+        $wechat_user = $user->toArray();
+        trace('授权重定向用户信息',json_encode($wechat_user));
+        //将用户信息保存到redis
+        //if(!empty($wechat_user))
+
+        $targetUrl = 'http://easywechat.szbchm.com/index.php/Index/index/showWebPage';
+        header('location:'. $targetUrl); // 跳转到 user/profile
+    }
+
+    //最后所展示的网页
+    public function showWebPage()
+    {
+        return $this->fetch();
     }
 }
