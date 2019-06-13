@@ -12,6 +12,8 @@
 <h5>测试easywechat网页授权,获取用户信息</h5>
 用户昵称:{$userinfo.nickname}
 <br/>
+用户图像:<img src="{$userinfo.headimgurl}"/>
+<br/>
 用户性别:
 {if ( $userinfo['sex'] == 1)}
 男性

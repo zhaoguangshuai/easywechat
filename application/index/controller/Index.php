@@ -379,7 +379,7 @@ class Index extends Controller
         //获取用户数据
         $userInfo = RedisHelper::getInstance()->hGetAll('userinfo:'.$openid);
         $this->assign('userinfo', $userInfo);
-        //$this->assign('userinfo', ['sex'=>'2']);
+        //$this->assign('userinfo', ['headimgurl'=>'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKlylG6IJ4Mb2t7fxKJc5M844HVuic3Iib8O9rvicoCsVuq2zkzDcFwseywvur7djiclyBrPgx6hibgkjw/132']);
         return $this->fetch();
     }
 }
