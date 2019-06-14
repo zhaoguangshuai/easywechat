@@ -41,7 +41,7 @@ class Wechat extends Controller
         ];
 
         $pay = Pay::wechat($this->config)->mp($order);*/
-        $this->assage('openid', session('openid'));
+        $this->assign('openid', session('openid'));
         return $this->fetch();
 
         // $pay->appId
