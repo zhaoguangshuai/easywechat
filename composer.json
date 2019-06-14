@@ -20,7 +20,8 @@
         "topthink/framework": "5.1.*",
         "naixiaoxin/think-wechat": "^1.6",
         "topthink/think-image": "^1.0",
-        "yansongda/pay": "^2.7"
+        "yansongda/pay": "^2.7",
+        "nesbot/carbon": "^1.38"
     },
     "autoload": {
         "psr-4": {
