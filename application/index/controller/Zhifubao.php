@@ -80,7 +80,7 @@ class Zhifubao extends Controller
             $time = $data->out_trade_no;
             //修改订单状态
             $res = RedisHelper::getInstance()->hSet('orderinfo:'.$time, 'status', 2);
-            !empty($res) ? trace($time.'该订单订单状态修改成功!') : trace($time.'该订单订单状态修改失败!');
+            !empty($res) ? trace($time.'success!') : trace($time.'errir!');
             // 请自行对 trade_status 进行判断及其它逻辑进行判断，在支付宝的业务通知中，只有交易通知状态为 TRADE_SUCCESS 或 TRADE_FINISHED 时，支付宝才会认定为买家付款成功。
             // 1、商户需要验证该通知数据中的out_trade_no是否为商户系统中创建的订单号；
             // 2、判断total_amount是否确实为该订单的实际金额（即商户订单创建时的金额）；
