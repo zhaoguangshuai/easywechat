@@ -376,8 +376,11 @@ class Index extends Controller
     public function showWebPage()
     {
         $openid = \request()->get('openid');
+        empty($openid) ? $openid = session('openid') : '';
         //获取用户数据
         $userInfo = RedisHelper::getInstance()->hGetAll('userinfo:'.$openid);
+        session('openid', $openid);
+        session('userInfo', $userInfo);
         $this->assign('userinfo', $userInfo);
         //$this->assign('userinfo', ['headimgurl'=>'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKlylG6IJ4Mb2t7fxKJc5M844HVuic3Iib8O9rvicoCsVuq2zkzDcFwseywvur7djiclyBrPgx6hibgkjw/132']);
         return $this->fetch();
