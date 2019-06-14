@@ -66,4 +66,12 @@ class Wechat extends Controller
         return $pay->success()->send();// laravel 框架中请直接 `return $pay->success()`
     }
 
+    //jssdk测试开发
+    public function demoJssdk()
+    {
+
+
+        return $this->fetch();
+    }
+
 }
