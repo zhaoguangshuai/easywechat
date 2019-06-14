@@ -4,19 +4,20 @@ namespace app\index\controller;
 use think\Controller;
 use Yansongda\Pay\Pay;
 use Yansongda\Pay\Log;
+use app\index\helper\RedisHelper;
 
 class Zhifubao extends Controller
 {
     protected $config = [
         'app_id' => '2016082000295641',
-        'notify_url' => 'http://yansongda.cn/notify.php',
-        'return_url' => 'http://yansongda.cn/return.php',
+        'notify_url' => 'http://easywechat.szbchm.com/index.php/index/Zhifubao/notify.html',
+        'return_url' => 'http://easywechat.szbchm.com/index.php/index/Zhifubao/showPayType.html',
         'ali_public_key' => 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuWJKrQ6SWvS6niI+4vEVZiYfjkCfLQfoFI2nCp9ZLDS42QtiL4Ccyx8scgc3nhVwmVRte8f57TFvGhvJD0upT4O5O/lRxmTjechXAorirVdAODpOu0mFfQV9y/T9o9hHnU+VmO5spoVb3umqpq6D/Pt8p25Yk852/w01VTIczrXC4QlrbOEe3sr1E9auoC7rgYjjCO6lZUIDjX/oBmNXZxhRDrYx4Yf5X7y8FRBFvygIE2FgxV4Yw+SL3QAa2m5MLcbusJpxOml9YVQfP8iSurx41PvvXUMo49JG3BDVernaCYXQCoUJv9fJwbnfZd7J5YByC+5KM4sblJTq7bXZWQIDAQAB',
         // 加密方式： **RSA2**
         'private_key' => 'MIIEpAIBAAKCAQEAs6+F2leOgOrvj9jTeDhb5q46GewOjqLBlGSs/bVL4Z3fMr3p+Q1Tux/6uogeVi/eHd84xvQdfpZ87A1SfoWnEGH5z15yorccxSOwWUI+q8gz51IWqjgZxhWKe31BxNZ+prnQpyeMBtE25fXp5nQZ/pftgePyUUvUZRcAUisswntobDQKbwx28VCXw5XB2A+lvYEvxmMv/QexYjwKK4M54j435TuC3UctZbnuynSPpOmCu45ZhEYXd4YMsGMdZE5/077ZU1aU7wx/gk07PiHImEOCDkzqsFo0Buc/knGcdOiUDvm2hn2y1XvwjyFOThsqCsQYi4JmwZdRa8kvOf57nwIDAQABAoIBAQCw5QCqln4VTrTvcW+msB1ReX57nJgsNfDLbV2dG8mLYQemBa9833DqDK6iynTLNq69y88ylose33o2TVtEccGp8Dqluv6yUAED14G6LexS43KtrXPgugAtsXE253ZDGUNwUggnN1i0MW2RcMqHdQ9ORDWvJUCeZj/AEafgPN8AyiLrZeL07jJz/uaRfAuNqkImCVIarKUX3HBCjl9TpuoMjcMhz/MsOmQ0agtCatO1eoH1sqv5Odvxb1i59c8Hvq/mGEXyRuoiDo05SE6IyXYXr84/Nf2xvVNHNQA6kTckj8shSi+HGM4mO1Y4Pbb7XcnxNkT0Inn6oJMSiy56P+CpAoGBAO1O+5FE1ZuVGuLb48cY+0lHCD+nhSBd66B5FrxgPYCkFOQWR7pWyfNDBlmO3SSooQ8TQXA25blrkDxzOAEGX57EPiipXr/hy5e+WNoukpy09rsO1TMsvC+v0FXLvZ+TIAkqfnYBgaT56ku7yZ8aFGMwdCPL7WJYAwUIcZX8wZ3dAoGBAMHWplAqhe4bfkGOEEpfs6VvEQxCqYMYVyR65K0rI1LiDZn6Ij8fdVtwMjGKFSZZTspmsqnbbuCE/VTyDzF4NpAxdm3cBtZACv1Lpu2Om+aTzhK2PI6WTDVTKAJBYegXaahBCqVbSxieR62IWtmOMjggTtAKWZ1P5LQcRwdkaB2rAoGAWnAPT318Kp7YcDx8whOzMGnxqtCc24jvk2iSUZgb2Dqv+3zCOTF6JUsV0Guxu5bISoZ8GdfSFKf5gBAo97sGFeuUBMsHYPkcLehM1FmLZk1Q+ljcx3P1A/ds3kWXLolTXCrlpvNMBSN5NwOKAyhdPK/qkvnUrfX8sJ5XK2H4J8ECgYAGIZ0HIiE0Y+g9eJnpUFelXvsCEUW9YNK4065SD/BBGedmPHRC3OLgbo8X5A9BNEf6vP7fwpIiRfKhcjqqzOuk6fueA/yvYD04v+Da2MzzoS8+hkcqF3T3pta4I4tORRdRfCUzD80zTSZlRc/h286Y2eTETd+By1onnFFe2X01mwKBgQDaxo4PBcLL2OyVT5DoXiIdTCJ8KNZL9+kV1aiBuOWxnRgkDjPngslzNa1bK+klGgJNYDbQqohKNn1HeFX3mYNfCUpuSnD2Yag53Dd/1DLO+NxzwvTu4D6DCUnMMMBVaF42ig31Bs0jI3JQZVqeeFzSET8fkoFopJf3G6UXlrIEAQ==',
         'log' => [ // optional
             'file' => './logs/alipay.log',
-            'level' => 'info', // 建议生产环境等级调整为 info，开发环境为 debug
+            'level' => 'debug', // 建议生产环境等级调整为 info，开发环境为 debug
             'type' => 'single', // optional, 可选 daily.
             'max_file' => 30, // optional, 当 type 为 daily 时有效，默认 30 天
         ],
@@ -36,12 +37,15 @@ class Zhifubao extends Controller
     public function index()
     {
         $type = \request()->get('type');
+        $time = time();
         $order = [
-            'out_trade_no' => time(),
-            'total_amount' => '1',
+            'out_trade_no' => $time,
+            'total_amount' => '0.01',
             'subject' => 'test subject - 测试',
         ];
-        
+        //保存订单信息
+        RedisHelper::getInstance()->hMSet('orderinfo:'.$time, array_merge($order, ['status' => 1]));
+        trace('订单信息'.json_encode(array_merge($order, ['status' => 1])));
         if($type == 1){
             $alipay = Pay::alipay($this->config)->web($order);
         }elseif ($type == 2){
@@ -71,7 +75,11 @@ class Zhifubao extends Controller
 
         try{
             $data = $alipay->verify(); // 是的，验签就这么简单！
-
+            trace('支付宝回调信息'.json_encode($data));
+            $time = $data->out_trade_no;
+            //修改订单状态
+            $res = RedisHelper::getInstance()->hSet('orderinfo:'.$time, 'status', 2);
+            !empty($res) ? trace($time.'该订单订单状态修改成功!') : trace($time.'该订单订单状态修改失败!');
             // 请自行对 trade_status 进行判断及其它逻辑进行判断，在支付宝的业务通知中，只有交易通知状态为 TRADE_SUCCESS 或 TRADE_FINISHED 时，支付宝才会认定为买家付款成功。
             // 1、商户需要验证该通知数据中的out_trade_no是否为商户系统中创建的订单号；
             // 2、判断total_amount是否确实为该订单的实际金额（即商户订单创建时的金额）；
@@ -81,7 +89,7 @@ class Zhifubao extends Controller
 
             Log::debug('Alipay notify', $data->all());
         } catch (\Exception $e) {
-            // $e->getMessage();
+            trace('回调错误信息############'.$e->getMessage());
         }
 
         return $alipay->success()->send();// laravel 框架中请直接 `return $alipay->success()`
