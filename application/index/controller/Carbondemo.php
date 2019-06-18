@@ -17,9 +17,11 @@ class Carbondemo extends Controller
         //$response = $client->request('GET', 'https://testzgs.szbchm.com/hm_ucenter/web/index.php?api=Promotion&action=showRewardInformation&userID=123005');
         $response = $client->request('POST', 'https://testzgs.szbchm.com/hm_ucenter/web/index.php',
             [
-                'api' => 'Promotion',
-                'action' => 'showRewardInformation',
-                'userID' => '123005'
+                'form_params' => [
+                    'api' => 'Promotion',
+                    'action' => 'showRewardInformation',
+                    'userID' => '123005'
+                ]
             ]
         );
         echo $response->getStatusCode(); # 200
