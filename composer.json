@@ -21,7 +21,8 @@
         "naixiaoxin/think-wechat": "^1.6",
         "topthink/think-image": "^1.0",
         "yansongda/pay": "^2.7",
-        "nesbot/carbon": "^1.38"
+        "nesbot/carbon": "^1.38",
+        "endroid/qr-code": "^2.5"
     },
     "autoload": {
         "psr-4": {
