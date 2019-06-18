@@ -14,8 +14,14 @@ class Carbondemo extends Controller
     public function testGuzzle()
     {
         $client = new \GuzzleHttp\Client();
-        $response = $client->request('GET', 'https://testzgs.szbchm.com/hm_ucenter/web/index.php?api=Promotion&action=showRewardInformation&userID=123005');
-
+        //$response = $client->request('GET', 'https://testzgs.szbchm.com/hm_ucenter/web/index.php?api=Promotion&action=showRewardInformation&userID=123005');
+        $response = $client->request('POST', 'https://testzgs.szbchm.com/hm_ucenter/web/index.php',
+            [
+                'api' => 'Promotion',
+                'action' => 'showRewardInformation',
+                'userID' => '123005'
+            ]
+        );
         echo $response->getStatusCode(); # 200
         echo $response->getHeaderLine('content-type'); # 'application/json; charset=utf8'
         echo $response->getBody(); # '{"id": 1420053, "name": "guzzle", ...}'
