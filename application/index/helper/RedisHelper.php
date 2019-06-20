@@ -22,6 +22,7 @@ class RedisHelper {
             if ($password != '') {
                 self::$_instance->auth($password);
             }
+            //self::$_instance->select(2);
         }
         return self::$_instance;
     }
