@@ -157,6 +157,7 @@ class Carbondemo extends Controller
         echo '<br/>';
         echo md5(12);
         echo '<br/>';
+        var_dump(date('Y-m-d H:i:s'));
         echo '<br/>';
         echo '<br/>';
         echo '<br/>';
