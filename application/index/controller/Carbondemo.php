@@ -133,6 +133,7 @@ class Carbondemo extends Controller
         echo '<br/>';
         //往前24个小时
         echo $dt->subHours(24);*/
+        dump(PHP_SAPI);exit;
         echo '<br/>';
         $dt = Carbon::now();
         //设置参数
