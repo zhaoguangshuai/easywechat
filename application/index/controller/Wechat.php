@@ -33,7 +33,7 @@ class Wechat extends Controller
     //微信JSAPI支付
     public function payJsapi()
     {
-        dump(PHP_SAPI);exit;
+        //dump(PHP_SAPI);exit;
         /*$order = [
             'out_trade_no' => time(),
             'total_fee' => '1', // **单位：分**
