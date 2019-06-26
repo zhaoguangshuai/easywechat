@@ -11,7 +11,7 @@
 
 return [
     'host' => '127.0.0.1', //TODO
-    'port' => 6380, //TODO
+    'port' => 6379, //TODO
     'password' => 'Yy304949708', //TODO
     'dbname' => null,
     'pconnect' => true, //长链接
