@@ -23,7 +23,8 @@
         "yansongda/pay": "^2.7",
         "nesbot/carbon": "^1.38",
         "endroid/qr-code": "^2.5",
-        "firebase/php-jwt": "^5.0"
+        "firebase/php-jwt": "^5.0",
+        "topthink/think-mongo": "2.0.*"
     },
     "autoload": {
         "psr-4": {

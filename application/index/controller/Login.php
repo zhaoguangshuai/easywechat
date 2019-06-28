@@ -3,35 +3,44 @@ namespace app\index\controller;
 
 use think\Controller;
 use \Firebase\JWT\JWT;
+use think\Request;
+use app\index\helper\RedisHelper;
 
 class Login extends Controller
 {
     //jwt登陆
-    public function demoLogin()
+    public function demoLogin(Request $request)
     {
-        $key = "example_key";
+        $username = $request->post('username', '', 'trim');
+        $password = $request->post('password', '', 'trim');
+        if(md5($password) != 'e10adc3949ba59abbe56e057f20f883e') return json(['code' => 100, 'msg' => '密码不对', 'data' => []]);
+
+        $userid = 10010;
+        $expirationTime = config('login.expiration_time');
+        $currentTime = time();
+        $expTime = $currentTime + $expirationTime;
         $token = array(
-            "iss" => "http://example.org",
-            "aud" => "http://example.com",
-            "iat" => 1356999524,
-            "nbf" => 1357000000
+            "userid" => $userid,
+            "iat" => $currentTime,  //生成时间
+            //"exp" => $expTime  //过期时间，不设置过期时间则永远不过期
         );
 
-        /**
-         * IMPORTANT:
-         * You must specify supported algorithms for your application. See
-         * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40
-         * for a list of spec-compliant algorithms.
-         */
-        $jwt = JWT::encode($token, $key);
-        var_dump($jwt);
+        //$key = config('login.key');
+        //$jwt = JWT::encode($token, $key); //对称性加密
+        $privateKey = config('login.privatekey');
+        $jwt = JWT::encode($token, $privateKey, 'RS256');  //非对称性加密
+        //将token存到redis并设置有效期
+        RedisHelper::getInstance()->setex('token:apiauth'.$userid, $expirationTime, $jwt);
+
+        return json(['code' => 200, 'msg' => '登陆成功', 'data' => ['userid' => $userid, 'token' => $jwt]]);
+        /*var_dump($jwt);
         $decoded = JWT::decode($jwt, $key, array('HS256'));
 
         print_r($decoded);
         print_r($this->object_array($decoded));
         exit;
 
-        return $this->fetch();
+        return $this->fetch();*/
     }
 
     //调用这个函数，将其幻化为数组，然后取出对应值

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4fc67328a56734cbbcea0d0bf03dc125",
+    "content-hash": "2ab6b6f0bf7e3864c060a331e514e530",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2012,6 +2012,43 @@
                 }
             ],
             "time": "2018-05-11T06:45:42+00:00"
+        },
+        {
+            "name": "topthink/think-mongo",
+            "version": "v2.0.14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/top-think/think-mongo.git",
+                "reference": "1438072521e37470c40eae1118ab583354185c19"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/top-think/think-mongo/zipball/1438072521e37470c40eae1118ab583354185c19",
+                "reference": "1438072521e37470c40eae1118ab583354185c19",
+                "shasum": ""
+            },
+            "require": {
+                "topthink/framework": "~5.1.20"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "think\\mongo\\": "src"
+                },
+                "files": []
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "liu21st",
+                    "email": "liu21st@gmail.com"
+                }
+            ],
+            "description": "mongodb driver for thinkphp5",
+            "time": "2019-03-07T06:05:50+00:00"
         },
         {
             "name": "yansongda/pay",

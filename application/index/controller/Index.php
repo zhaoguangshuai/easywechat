@@ -258,7 +258,7 @@ class Index extends Controller
     }
 
     //设置菜单栏
-    public function hello()
+    public function setMenu()
     {
         $app = app('wechat.official_account');
         $buttons = [
@@ -384,5 +384,11 @@ class Index extends Controller
         $this->assign('userinfo', $userInfo);
         //$this->assign('userinfo', ['headimgurl'=>'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKlylG6IJ4Mb2t7fxKJc5M844HVuic3Iib8O9rvicoCsVuq2zkzDcFwseywvur7djiclyBrPgx6hibgkjw/132']);
         return $this->fetch();
+    }
+
+    public function hello()
+    {
+        $name = \request()->get('id');
+        var_dump($name);exit;
     }
 }
