@@ -6,7 +6,7 @@ use JPush\Client as JPush;
 
 class JiGuang extends Controller
 {
-    //极光推送
+    //极光推送//
     public function index()
     {
         $app_key = 'd9a2e9c2fb43558cd1abc97d';
