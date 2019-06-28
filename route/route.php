@@ -46,6 +46,14 @@ Route::rule('validRongQi', 'Index/RongQi/validRongQi');
 
 //极光推送
 Route::rule('jiguang', 'Index/JiGuang/index');
+
+//cli
+Route::rule('getCli', 'Index/JiGuang/getCli');
+
+//下载文件
+Route::rule('download', 'Index/JiGuang/download');
+
+
 /*return [
     //公共访问接口
     '[mom]' => [
