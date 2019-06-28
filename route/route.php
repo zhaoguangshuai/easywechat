@@ -43,6 +43,9 @@ Route::rule('rongqi', 'Index/RongQi/index');
 
 //测试容器
 Route::rule('validRongQi', 'Index/RongQi/validRongQi');
+
+//极光推送
+Route::rule('jiguang', 'Index/JiGuang/index');
 /*return [
     //公共访问接口
     '[mom]' => [

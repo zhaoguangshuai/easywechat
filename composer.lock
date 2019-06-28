@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2ab6b6f0bf7e3864c060a331e514e530",
+    "content-hash": "b1135e41254e2d035ace3ec65d073948",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -393,6 +393,49 @@
                 "url"
             ],
             "time": "2018-12-04T20:46:45+00:00"
+        },
+        {
+            "name": "jpush/jpush",
+            "version": "v3.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jpush/jpush-api-php-client.git",
+                "reference": "3fea757d549f08d01e453e9b67fe54948bcc9b5b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jpush/jpush-api-php-client/zipball/3fea757d549f08d01e453e9b67fe54948bcc9b5b",
+                "reference": "3fea757d549f08d01e453e9b67fe54948bcc9b5b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "JPush\\": "src/JPush/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "JPush",
+                    "email": "support@jpush.cn",
+                    "homepage": "https://www.jpush.cn/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "JPush API PHP Client",
+            "homepage": "https://github.com/jpush/jpush-api-php-client",
+            "time": "2016-07-27T09:02:26+00:00"
         },
         {
             "name": "khanamiryan/qrcode-detector-decoder",
