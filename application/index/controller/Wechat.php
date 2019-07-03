@@ -42,7 +42,7 @@ class Wechat extends Controller
         ];
 
         $pay = Pay::wechat($this->config)->mp($order);*/
-        var_dump($_SERVER);exit;
+        //var_dump($_SERVER);exit;
         $this->assign('openid', session('openid'));
         return $this->fetch();
 
