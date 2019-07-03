@@ -22,6 +22,7 @@ class RongQi extends Controller
     //使用依赖注入获取对象
     public function validRongQi(GetIp $getIp, $type, $userid)
     {
+        dump($_SERVER);
         var_dump($getIp->getRealIpAddr());
         var_dump($type);
         var_dump($userid);
