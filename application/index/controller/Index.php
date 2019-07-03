@@ -337,7 +337,7 @@ class Index extends Controller
     //授权后重定向的回调链接地址
     public function oauth_callback()
     {
-        var_dump($_SERVER);exit;
+        //var_dump($_SERVER);exit;
         $config = [
             'debug'   => true,
             'app_id'  => config('wechat.official_account.default.app_id'),
